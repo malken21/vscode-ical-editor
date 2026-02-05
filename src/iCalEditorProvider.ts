@@ -61,6 +61,14 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
 					// Replace the entire document with the new content from the calendar
 					this.updateTextDocument(document, e.text);
 					return;
+				case 'deleteRequest':
+					vscode.window.showWarningMessage('このイベントを削除しますか？', { modal: true }, 'はい', 'いいえ')
+						.then(selection => {
+							if (selection === 'はい') {
+								webviewPanel.webview.postMessage({ type: 'deleteConfirm' });
+							}
+						});
+					return;
 			}
 		});
 

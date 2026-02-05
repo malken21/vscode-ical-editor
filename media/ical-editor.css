@@ -155,7 +155,7 @@ body {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
@@ -324,4 +324,9 @@ body {
     align-items: center;
     gap: 8px;
     font-size: 12px;
+}
+
+/* Hide backend elements when modal is open */
+body.modal-active .fc-popover {
+    visibility: hidden !important;
 }

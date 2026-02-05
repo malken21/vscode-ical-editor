@@ -80,6 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const text = message.text;
                 parseICal(text);
                 break;
+            case 'deleteConfirm':
+                executeDeletion();
+                break;
         }
     });
 
@@ -187,6 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openModal(event, selectionInfo) {
         modal.classList.add('show');
+        document.body.classList.add('modal-active');
         
         if (event) {
             selectedEventId = event.id;
@@ -231,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeModal() {
         modal.classList.remove('show');
+        document.body.classList.remove('modal-active');
         eventForm.reset();
         selectedEventId = null;
     }
@@ -281,7 +286,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     deleteBtn.onclick = function() {
-        if (selectedEventId && confirm('このイベントを削除しますか？')) {
+        if (selectedEventId) {
+            vscode.postMessage({ type: 'deleteRequest' });
+        }
+    };
+
+    function executeDeletion() {
+        if (selectedEventId) {
             const event = calendar.getEventById(selectedEventId);
             if (event) {
                 event.remove();
@@ -289,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateDoc();
             closeModal();
         }
-    };
+    }
 
     function updateDoc() {
         const events = calendar.getEvents();
