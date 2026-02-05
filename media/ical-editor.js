@@ -80,6 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const text = message.text;
                 parseICal(text);
                 break;
+            case 'deleteConfirm':
+                executeDeletion();
+                break;
         }
     });
 
@@ -94,8 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Pre-process: Add VALUE=DATE to DTSTART/DTEND if they are only 8 digits
             // Many weather iCal feeds omit this, but ICAL.js is strict.
             // e.g. DTSTART:20260205 -> DTSTART;VALUE=DATE:20260205
-            console.log('Pre-processing iCal content for 8-digit dates...');
-            content = content.replace(/^(DTSTART|DTEND):(\d{8})$/gm, '$1;VALUE=DATE:$2');
+            // Also handle cases with other parameters or whitespace.
+            console.log('Pre-processing iCal content...');
+            content = content.replace(/^((?:DTSTART|DTEND)(?:;[^:]*)?):(\d{8})$/gm, '$1;VALUE=DATE:$2');
 
             console.log('Parsing iCal content length:', content.length);
             const jcalData = ICAL.parse(content);
@@ -126,20 +130,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
 
-                    const startDate = dtstart.toJSDate();
-                    const isTodayEvent = isSameDay(startDate, new Date());
-
                     const fcEvent = {
                         id: uid,
                         title: summary,
-                        start: startDate,
+                        start: dtstart ? dtstart.toJSDate() : null,
                         end: dtend ? dtend.toJSDate() : null,
                         allDay: dtstart.isDate,
-                        editable: !isTodayEvent, // Prevent dragging/resizing if it's today's event
+                        editable: true,
                         extendedProps: {
                             description: description,
-                            location: location,
-                            isReadOnly: isTodayEvent
+                            location: location
                         }
                     };
 
@@ -190,20 +190,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openModal(event, selectionInfo) {
         modal.classList.add('show');
+        document.body.classList.add('modal-active');
         
         if (event) {
             selectedEventId = event.id;
-            const isReadOnly = event.extendedProps.isReadOnly;
 
-            modalTitle.textContent = isReadOnly ? 'イベント（閲覧専用）' : 'イベント編集';
-            deleteBtn.style.display = isReadOnly ? 'none' : 'block';
+            modalTitle.textContent = 'イベント編集';
+            deleteBtn.style.display = 'block';
             
-            // Toggle form accessibility
+            // Ensure inputs are enabled
             const inputs = [titleInput, startInput, endInput, locInput, descInput];
-            inputs.forEach(input => input.disabled = isReadOnly);
+            inputs.forEach(input => input.disabled = false);
             const submitBtn = document.querySelector('#eventForm .submit-btn');
             if (submitBtn) {
-                submitBtn.style.display = isReadOnly ? 'none' : 'inline-block';
+                submitBtn.style.display = 'inline-block';
             }
 
             titleInput.value = event.title;
@@ -235,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeModal() {
         modal.classList.remove('show');
+        document.body.classList.remove('modal-active');
         eventForm.reset();
         selectedEventId = null;
     }
@@ -285,7 +286,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     deleteBtn.onclick = function() {
-        if (selectedEventId && confirm('このイベントを削除しますか？')) {
+        if (selectedEventId) {
+            vscode.postMessage({ type: 'deleteRequest' });
+        }
+    };
+
+    function executeDeletion() {
+        if (selectedEventId) {
             const event = calendar.getEventById(selectedEventId);
             if (event) {
                 event.remove();
@@ -293,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateDoc();
             closeModal();
         }
-    };
+    }
 
     function updateDoc() {
         const events = calendar.getEvents();
@@ -312,10 +319,18 @@ document.addEventListener('DOMContentLoaded', function() {
             event.description = fcEvent.extendedProps.description || '';
             event.location = fcEvent.extendedProps.location || '';
             
-            event.startDate = ICAL.Time.fromJSDate(fcEvent.start, true);
+            const start = ICAL.Time.fromJSDate(fcEvent.start, true);
+            if (fcEvent.allDay) {
+                start.isDate = true;
+            }
+            event.startDate = start;
             
             if (fcEvent.end) {
-                event.endDate = ICAL.Time.fromJSDate(fcEvent.end, true);
+                const end = ICAL.Time.fromJSDate(fcEvent.end, true);
+                if (fcEvent.allDay) {
+                    end.isDate = true;
+                }
+                event.endDate = end;
             }
 
             comp.addSubcomponent(vevent);
