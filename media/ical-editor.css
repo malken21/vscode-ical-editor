@@ -1,0 +1,235 @@
+:root {
+    --bg-color: var(--vscode-editor-background);
+    --text-color: var(--vscode-editor-foreground);
+    --sidebar-bg: var(--vscode-sideBar-background);
+    --border-color: var(--vscode-widget-border);
+    --primary-color: var(--vscode-button-background);
+    --primary-hover: var(--vscode-button-hoverBackground);
+    --secondary-bg: var(--vscode-editorWidget-background);
+    --danger-color: #f44336;
+    --modal-bg: var(--vscode-editorWidget-background);
+    --input-bg: var(--vscode-input-background);
+    --input-border: var(--vscode-input-border);
+
+    --font-family: var(--vscode-font-family);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.app-header {
+    background-color: var(--sidebar-bg);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    height: 50px;
+}
+
+.app-header h1 {
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn {
+    border: 1px solid transparent;
+    border-radius: 2px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--vscode-button-foreground);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--vscode-button-secondaryBackground);
+    color: var(--vscode-button-secondaryForeground);
+}
+
+.btn-secondary:hover {
+    background-color: var(--vscode-button-secondaryHoverBackground);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.calendar-container {
+    flex: 1;
+    padding: 20px;
+    overflow: hidden;
+}
+
+#calendar {
+    height: 100%;
+    min-height: 400px;
+    /* Ensure it has some height even if flex fails */
+    border: 1px solid var(--border-color);
+}
+
+/* FullCalendar Customization */
+.fc {
+    --fc-page-bg-color: var(--bg-color);
+    --fc-neutral-bg-color: var(--secondary-bg);
+    --fc-list-event-hover-bg-color: var(--secondary-bg);
+    --fc-border-color: var(--border-color);
+    --fc-button-text-color: var(--vscode-button-foreground);
+    --fc-button-bg-color: var(--vscode-button-background);
+    --fc-button-border-color: transparent;
+    --fc-button-hover-bg-color: var(--vscode-button-hoverBackground);
+    --fc-button-hover-border-color: transparent;
+    --fc-button-active-bg-color: var(--vscode-button-hoverBackground);
+    --fc-button-active-border-color: transparent;
+
+    color: var(--text-color);
+    font-size: 13px;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-color: var(--border-color);
+}
+
+.fc-day-today {
+    background-color: var(--vscode-editor-selectionBackground) !important;
+    opacity: 0.3;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--modal-bg);
+    padding: 0;
+    border-radius: 4px;
+    width: 450px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+}
+
+.modal-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.close {
+    color: var(--text-color);
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.close:hover {
+    opacity: 1;
+}
+
+.modal-body {
+    padding: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 6px 8px;
+    box-sizing: border-box;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 2px;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: 1px solid var(--vscode-focusBorder);
+    border-color: var(--vscode-focusBorder);
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.col {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.right-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}

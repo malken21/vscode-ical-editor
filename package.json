@@ -1,0 +1,54 @@
+{
+    "name": "vscode-ical-editor",
+    "displayName": "iCalendar Editor",
+    "description": "Visual editor for iCalendar (.ics) files",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [],
+    "main": "./out/extension.js",
+    "contributes": {
+        "customEditors": [
+            {
+                "viewType": "marumasa.icalEditor",
+                "displayName": "iCalendar Editor",
+                "selector": [
+                    {
+                        "filenamePattern": "*.ics"
+                    }
+                ],
+                "priority": "default"
+            }
+        ],
+        "commands": [
+            {
+                "command": "marumasa.icalEditor.toggleText",
+                "title": "テキストで開く (Open as Text)",
+                "icon": "$(file-code)"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "command": "marumasa.icalEditor.toggleText",
+                    "when": "activeCustomEditorId == 'marumasa.icalEditor'",
+                    "group": "navigation"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.85.0",
+        "@types/node": "^18.0.0",
+        "typescript": "^5.3.0"
+    }
+}

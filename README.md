@@ -1,2 +1,1 @@
-# ical-vs-extension
-
+# vscode-ical-editor
