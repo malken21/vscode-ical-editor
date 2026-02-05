@@ -111,6 +111,16 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
                 <script src="${fullCalendarJs}"></script>
                 <script src="${iCalJs}"></script>
 
+                <!-- Block Service Worker registration to prevent "InvalidStateError" in VSCode Webviews -->
+                <script>
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.register = function() {
+                            console.log('Service Worker registration intercepted and blocked to prevent Webview errors.');
+                            return Promise.resolve();
+                        };
+                    }
+                </script>
+
 				<title>iCalendar Editor</title>
 			</head>
 			<body>
