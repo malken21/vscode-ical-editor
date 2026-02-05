@@ -1,4 +1,4 @@
-# iCalendar Editor (vscode-ical-editor)
+# VSCode iCalendar Editor
 
 iCalendar (.ics) ファイルを Visual Studio Code 上で GUI を用いて視覚的に表示・編集するための拡張機能です。
 
@@ -32,7 +32,3 @@ npm run compile
 ### デバッグ
 
 F5 キーを押して「Extension Development Host」を起動し、テスト用の `.ics` ファイルを開いて動作を確認してください。
-
-## ライセンス
-
-[MIT LICENSE](LICENSE)
