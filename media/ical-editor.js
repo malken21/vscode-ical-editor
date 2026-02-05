@@ -126,20 +126,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
 
-                    const startDate = dtstart.toJSDate();
-                    const isTodayEvent = isSameDay(startDate, new Date());
-
                     const fcEvent = {
                         id: uid,
                         title: summary,
                         start: startDate,
                         end: dtend ? dtend.toJSDate() : null,
                         allDay: dtstart.isDate,
-                        editable: !isTodayEvent, // Prevent dragging/resizing if it's today's event
+                        editable: true,
                         extendedProps: {
                             description: description,
-                            location: location,
-                            isReadOnly: isTodayEvent
+                            location: location
                         }
                     };
 
@@ -193,17 +189,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (event) {
             selectedEventId = event.id;
-            const isReadOnly = event.extendedProps.isReadOnly;
 
-            modalTitle.textContent = isReadOnly ? 'イベント（閲覧専用）' : 'イベント編集';
-            deleteBtn.style.display = isReadOnly ? 'none' : 'block';
+            modalTitle.textContent = 'イベント編集';
+            deleteBtn.style.display = 'block';
             
-            // Toggle form accessibility
+            // Ensure inputs are enabled
             const inputs = [titleInput, startInput, endInput, locInput, descInput];
-            inputs.forEach(input => input.disabled = isReadOnly);
+            inputs.forEach(input => input.disabled = false);
             const submitBtn = document.querySelector('#eventForm .submit-btn');
             if (submitBtn) {
-                submitBtn.style.display = isReadOnly ? 'none' : 'inline-block';
+                submitBtn.style.display = 'inline-block';
             }
 
             titleInput.value = event.title;
@@ -312,10 +307,18 @@ document.addEventListener('DOMContentLoaded', function() {
             event.description = fcEvent.extendedProps.description || '';
             event.location = fcEvent.extendedProps.location || '';
             
-            event.startDate = ICAL.Time.fromJSDate(fcEvent.start, true);
+            const start = ICAL.Time.fromJSDate(fcEvent.start, true);
+            if (fcEvent.allDay) {
+                start.isDate = true;
+            }
+            event.startDate = start;
             
             if (fcEvent.end) {
-                event.endDate = ICAL.Time.fromJSDate(fcEvent.end, true);
+                const end = ICAL.Time.fromJSDate(fcEvent.end, true);
+                if (fcEvent.allDay) {
+                    end.isDate = true;
+                }
+                event.endDate = end;
             }
 
             comp.addSubcomponent(vevent);
