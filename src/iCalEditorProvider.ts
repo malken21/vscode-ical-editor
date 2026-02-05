@@ -26,14 +26,14 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
 		// Setup initial content for the webview
 		webviewPanel.webview.options = {
 			enableScripts: true,
-            localResourceRoots: [
-                vscode.Uri.file(path.join(this.context.extensionPath, 'media'))
-            ]
+			localResourceRoots: [
+				vscode.Uri.file(path.join(this.context.extensionPath, 'media'))
+			]
 		};
 		webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
 
 		function updateWebview() {
-            console.log('Sending update message to webview, text length:', document.getText().length);
+			console.log('Sending update message to webview, text length:', document.getText().length);
 			webviewPanel.webview.postMessage({
 				type: 'update',
 				text: document.getText(),
@@ -58,7 +58,7 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
 					updateWebview();
 					return;
 				case 'update':
-                    // Replace the entire document with the new content from the calendar
+					// Replace the entire document with the new content from the calendar
 					this.updateTextDocument(document, e.text);
 					return;
 			}
@@ -83,11 +83,11 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
 			path.join(this.context.extensionPath, 'media', 'ical-editor.css')
 		));
 
-        // Use CDN for libraries for now (ensure CSP allows it)
-        // In a real production extension, these should be bundled.
-        const fullCalendarJs = 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js';
-        const iCalJs = 'https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.5.0/ical.min.js';
-        const fontAwesomeCss = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
+		// Use CDN for libraries for now (ensure CSP allows it)
+		// In a real production extension, these should be bundled.
+		const fullCalendarJs = 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js';
+		const iCalJs = 'https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.5.0/ical.min.js';
+		const fontAwesomeCss = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
 
 		return `
 			<!DOCTYPE html>
@@ -118,7 +118,7 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
                     </main>
                 </div>
 
-                <!-- Event Modal (Same structure) -->
+                <!-- Event Modal -->
                 <div id="eventModal" class="modal">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -129,28 +129,40 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
                             <form id="eventForm">
                                 <div class="form-group">
                                     <label for="eventTitle">タイトル</label>
-                                    <input type="text" id="eventTitle" required>
+                                    <input type="text" id="eventTitle" required placeholder="イベントのタイトルを入力">
+                                </div>
+                                <div class="form-group-inline">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="allDayCheckbox">
+                                        <span class="checkmark"></span>
+                                        終日
+                                    </label>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col">
                                         <label for="startDate">開始日時</label>
                                         <input type="datetime-local" id="startDate" required>
                                     </div>
-                                    <div class="col">
+                                    <div class="col" id="endDateContainer">
                                         <label for="endDate">終了日時</label>
                                         <input type="datetime-local" id="endDate" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="eventLocation">場所</label>
-                                    <input type="text" id="eventLocation">
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <input type="text" id="eventLocation" placeholder="場所を追加">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="eventDescription">説明</label>
-                                    <textarea id="eventDescription" rows="3"></textarea>
+                                    <textarea id="eventDescription" rows="3" placeholder="説明を追加"></textarea>
                                 </div>
                                 <div class="form-actions">
-                                    <button type="button" id="deleteEventBtn" class="btn btn-danger" style="display: none;">削除</button>
+                                    <button type="button" id="deleteEventBtn" class="btn btn-danger" style="display: none;">
+                                        <i class="fa-solid fa-trash-can"></i> 削除
+                                    </button>
                                     <div class="right-actions">
                                         <button type="button" class="btn btn-secondary cancel-btn">キャンセル</button>
                                         <button type="submit" class="btn btn-primary submit-btn">保存</button>
@@ -172,11 +184,15 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
 	private updateTextDocument(document: vscode.TextDocument, text: string) {
 		const edit = new vscode.WorkspaceEdit();
 
-		// Just replace the entire document every time for this simple example.
-		// A more complete extension should compute minimal edits.
+		// Replace the entire document content
+		const fullRange = new vscode.Range(
+			document.positionAt(0),
+			document.positionAt(document.getText().length)
+		);
+
 		edit.replace(
 			document.uri,
-			new vscode.Range(0, 0, document.lineCount, 0),
+			fullRange,
 			text
 		);
 
