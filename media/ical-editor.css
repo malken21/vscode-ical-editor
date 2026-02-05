@@ -114,7 +114,7 @@ body {
     --fc-neutral-bg-color: var(--secondary-bg);
     --fc-list-event-hover-bg-color: var(--secondary-bg);
     --fc-border-color: var(--border-color);
-    
+
     --fc-button-text-color: var(--vscode-button-foreground);
     --fc-button-bg-color: var(--vscode-button-background);
     --fc-button-border-color: transparent;
@@ -172,8 +172,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.98); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .modal-content {
@@ -242,6 +249,7 @@ body {
     font-family: inherit;
     font-size: 13px;
     transition: border-color 0.2s;
+    resize: vertical;
 }
 
 .form-group input:focus,

@@ -94,8 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Pre-process: Add VALUE=DATE to DTSTART/DTEND if they are only 8 digits
             // Many weather iCal feeds omit this, but ICAL.js is strict.
             // e.g. DTSTART:20260205 -> DTSTART;VALUE=DATE:20260205
-            console.log('Pre-processing iCal content for 8-digit dates...');
-            content = content.replace(/^(DTSTART|DTEND):(\d{8})$/gm, '$1;VALUE=DATE:$2');
+            // Also handle cases with other parameters or whitespace.
+            console.log('Pre-processing iCal content...');
+            content = content.replace(/^((?:DTSTART|DTEND)(?:;[^:]*)?):(\d{8})$/gm, '$1;VALUE=DATE:$2');
 
             console.log('Parsing iCal content length:', content.length);
             const jcalData = ICAL.parse(content);
@@ -129,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const fcEvent = {
                         id: uid,
                         title: summary,
-                        start: startDate,
+                        start: dtstart ? dtstart.toJSDate() : null,
                         end: dtend ? dtend.toJSDate() : null,
                         allDay: dtstart.isDate,
                         editable: true,
