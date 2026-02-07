@@ -1,7 +1,9 @@
 {
     "name": "vscode-ical-editor",
+    "publisher": "marumasa",
     "displayName": "iCalendar Editor",
     "description": "Visual editor for iCalendar (.ics) files",
+    "icon": "images/icon.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/malken21/vscode-ical-editor.git"

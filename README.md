@@ -1,6 +1,6 @@
 # VSCode iCalendar Editor
 
-![VSCode iCalendar Editor Screenshot](screenshot.png)
+![VSCode iCalendar Editor Screenshot](images/screenshot.png)
 
 iCalendar (.ics) ファイルを Visual Studio Code 上で GUI を用いて視覚的に表示・編集するための拡張機能です。
 
