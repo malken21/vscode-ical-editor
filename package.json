@@ -1,9 +1,10 @@
 {
     "name": "vscode-ical-editor",
     "publisher": "marumasa",
-    "displayName": "iCalendar Editor",
-    "description": "Visual editor for iCalendar (.ics) files",
+    "displayName": "%displayName%",
+    "description": "%description%",
     "icon": "images/icon.png",
+    "l10n": "./l10n",
     "repository": {
         "type": "git",
         "url": "https://github.com/malken21/vscode-ical-editor.git"
@@ -21,7 +22,7 @@
         "customEditors": [
             {
                 "viewType": "marumasa.icalEditor",
-                "displayName": "iCalendar Editor",
+                "displayName": "%displayName%",
                 "selector": [
                     {
                         "filenamePattern": "*.ics"
@@ -33,7 +34,7 @@
         "commands": [
             {
                 "command": "marumasa.icalEditor.toggleText",
-                "title": "テキストで開く (Open as Text)",
+                "title": "%command.toggleText%",
                 "icon": "$(file-code)"
             }
         ],

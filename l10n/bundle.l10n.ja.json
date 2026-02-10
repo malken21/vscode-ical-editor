@@ -1,0 +1,19 @@
+{
+    "openIcalFileMessage": "このコマンドを使用するにはiCalendarファイルを開いてください。",
+    "deleteEventConfirm": "このイベントを削除しますか？",
+    "yes": "はい",
+    "no": "いいえ",
+    "editEvent": "イベント編集",
+    "title": "タイトル",
+    "titlePlaceholder": "イベントのタイトルを入力",
+    "allDay": "終日",
+    "startDate": "開始日時",
+    "endDate": "終了日時",
+    "location": "場所",
+    "locationPlaceholder": "場所を追加",
+    "description": "説明",
+    "descriptionPlaceholder": "説明を追加",
+    "delete": "削除",
+    "cancel": "キャンセル",
+    "save": "保存"
+}

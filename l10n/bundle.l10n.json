@@ -1,0 +1,19 @@
+{
+    "openIcalFileMessage": "Open an iCalendar file to use this command.",
+    "deleteEventConfirm": "Are you sure you want to delete this event?",
+    "yes": "Yes",
+    "no": "No",
+    "editEvent": "Edit Event",
+    "title": "Title",
+    "titlePlaceholder": "Enter event title",
+    "allDay": "All Day",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "location": "Location",
+    "locationPlaceholder": "Add location",
+    "description": "Description",
+    "descriptionPlaceholder": "Add description",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save"
+}
