@@ -62,9 +62,9 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
 					this.updateTextDocument(document, e.text);
 					return;
 				case 'deleteRequest':
-					vscode.window.showWarningMessage('このイベントを削除しますか？', { modal: true }, 'はい', 'いいえ')
+					vscode.window.showWarningMessage(vscode.l10n.t('deleteEventConfirm'), { modal: true }, vscode.l10n.t('yes'), vscode.l10n.t('no'))
 						.then(selection => {
-							if (selection === 'はい') {
+							if (selection === vscode.l10n.t('yes')) {
 								webviewPanel.webview.postMessage({ type: 'deleteConfirm' });
 							}
 						});
@@ -99,7 +99,7 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
 
 		return `
 			<!DOCTYPE html>
-			<html lang="ja">
+			<html lang="${vscode.env.language}">
 			<head>
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,12 +121,12 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
                     }
                 </script>
 
-				<title>iCalendar Editor</title>
+				<title>${vscode.l10n.t('displayName')}</title>
 			</head>
 			<body>
 				<div class="app-container">
                     <header class="app-header">
-                        <h1><i class="fa-solid fa-calendar-days"></i> iCalendar Editor</h1>
+                        <h1><i class="fa-solid fa-calendar-days"></i> ${vscode.l10n.t('displayName')}</h1>
                         <!-- Actions like import/export are less relevant here as it's a document editor, 
                              but we might want 'Refresh' or specific Calendar view toggles -->
                     </header>
@@ -140,50 +140,50 @@ export class ICalEditorProvider implements vscode.CustomTextEditorProvider {
                 <div id="eventModal" class="modal">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h2 id="modalTitle">イベント編集</h2>
+                            <h2 id="modalTitle">${vscode.l10n.t('editEvent')}</h2>
                             <span class="close">&times;</span>
                         </div>
                         <div class="modal-body">
                             <form id="eventForm">
                                 <div class="form-group">
-                                    <label for="eventTitle">タイトル</label>
-                                    <input type="text" id="eventTitle" required placeholder="イベントのタイトルを入力">
+                                    <label for="eventTitle">${vscode.l10n.t('title')}</label>
+                                    <input type="text" id="eventTitle" required placeholder="${vscode.l10n.t('titlePlaceholder')}">
                                 </div>
                                 <div class="form-group-inline">
                                     <label class="checkbox-container">
                                         <input type="checkbox" id="allDayCheckbox">
                                         <span class="checkmark"></span>
-                                        終日
+                                        ${vscode.l10n.t('allDay')}
                                     </label>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col">
-                                        <label for="startDate">開始日時</label>
+                                        <label for="startDate">${vscode.l10n.t('startDate')}</label>
                                         <input type="datetime-local" id="startDate" required>
                                     </div>
                                     <div class="col" id="endDateContainer">
-                                        <label for="endDate">終了日時</label>
+                                        <label for="endDate">${vscode.l10n.t('endDate')}</label>
                                         <input type="datetime-local" id="endDate" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="eventLocation">場所</label>
+                                    <label for="eventLocation">${vscode.l10n.t('location')}</label>
                                     <div class="input-with-icon">
                                         <i class="fa-solid fa-location-dot"></i>
-                                        <input type="text" id="eventLocation" placeholder="場所を追加">
+                                        <input type="text" id="eventLocation" placeholder="${vscode.l10n.t('locationPlaceholder')}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="eventDescription">説明</label>
-                                    <textarea id="eventDescription" rows="3" placeholder="説明を追加"></textarea>
+                                    <label for="eventDescription">${vscode.l10n.t('description')}</label>
+                                    <textarea id="eventDescription" rows="3" placeholder="${vscode.l10n.t('descriptionPlaceholder')}"></textarea>
                                 </div>
                                 <div class="form-actions">
                                     <button type="button" id="deleteEventBtn" class="btn btn-danger" style="display: none;">
-                                        <i class="fa-solid fa-trash-can"></i> 削除
+                                        <i class="fa-solid fa-trash-can"></i> ${vscode.l10n.t('delete')}
                                     </button>
                                     <div class="right-actions">
-                                        <button type="button" class="btn btn-secondary cancel-btn">キャンセル</button>
-                                        <button type="submit" class="btn btn-primary submit-btn">保存</button>
+                                        <button type="button" class="btn btn-secondary cancel-btn">${vscode.l10n.t('cancel')}</button>
+                                        <button type="submit" class="btn btn-primary submit-btn">${vscode.l10n.t('save')}</button>
                                     </div>
                                 </div>
                             </form>

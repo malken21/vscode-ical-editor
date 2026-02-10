@@ -1,0 +1,5 @@
+{
+    "displayName": "iCalendar Editor",
+    "description": "Visual editor for iCalendar (.ics) files",
+    "command.toggleText": "Open as Text"
+}
