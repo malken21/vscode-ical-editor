@@ -1,0 +1,19 @@
+{
+    "openIcalFileMessage": "请打开 iCalendar 文件以使用此命令。",
+    "deleteEventConfirm": "您确定要删除此事件吗？",
+    "yes": "是",
+    "no": "否",
+    "editEvent": "编辑事件",
+    "title": "标题",
+    "titlePlaceholder": "输入事件标题",
+    "allDay": "全天",
+    "startDate": "开始日期",
+    "endDate": "结束日期",
+    "location": "地点",
+    "locationPlaceholder": "添加地点",
+    "description": "描述",
+    "descriptionPlaceholder": "添加描述",
+    "delete": "删除",
+    "cancel": "取消",
+    "save": "保存"
+}

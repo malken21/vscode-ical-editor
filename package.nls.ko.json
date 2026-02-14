@@ -1,0 +1,5 @@
+{
+    "displayName": "iCalendar Editor",
+    "description": "iCalendar (.ics) 파일을 위한 비주얼 에디터",
+    "command.toggleText": "텍스트로 열기"
+}
